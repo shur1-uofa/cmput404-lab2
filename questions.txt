@@ -1,0 +1,65 @@
+Question 1 
+To create a socket, call socket.socket()
+The first argument specifies the address family. 
+The default is AF_INET which is IPv4
+For IPv6, use AF_INET6
+
+The second argument can specify the transport layer protocol. 
+To specify TCP, use SOCK_STREAM constant
+
+So to create a TCP socket using the Python socket library
+s = socket.socket( socket.AF_INET, socket.SOCK_STREAM )     # or you can use socket.AF_INET6 for IPv4
+
+
+
+Question 2
+The main difference is that the server socket listens for connections
+It binds the socket to an address space which is used by clients to connect 
+    socket.bind( (hostname, port) )     # for IPv4 
+Then starts listening for connections 
+    socket.listen( max_backlog_connections_allowed ) 
+It listens for connection requests from client sockets then accepts the connection
+    connection, address = socket.accept()
+
+
+There are also other differences between client.py & echo_server.py like: 
+    socket.setsockopt( socket.SOL_SOCKET, socket.SO_REUSEADDR, 1 )
+
+socket.setsockopt() will be discussed in Question 3 
+
+
+
+Question 3 
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+The first argument specifies the level of the protocol stack that handles the given option
+socket.SOL_SOCKET means the option will be handled at the socket API level 
+
+The second argument is the option name. 
+The third argument, in this case, is a boolean integer flag. So 1 means true. Thus enabling reuse of same bind port
+
+By default, this isn't allowed due to how TCP closes its connection. 
+To give time for potential in-network packets to arrive, OS disables the use of the (address, port) pair. 
+
+
+
+Question 4 
+s.accept returns connection and address. 
+
+The connection represents a socket connection between the client and server. 
+Using this connection, you can send and receive data 
+
+The address represents the address of the client. For AF_INET, that would be ( hostname/IPv4, port ) pair 
+
+
+
+Question 5 
+The echo server echoes back whatever is sent back 
+    b'GET / HTTP/1.0\r\nHost: \r\n\r\n'
+This is what is sent from client.py to the server (echo_server.py)
+
+
+
+Question 6 
+https://github.com/shur1-uofa/cmput404-lab2
+
